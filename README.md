@@ -33,7 +33,7 @@ My project includes the following files:
 * utils.py contains code for Image Generator and data augmentation
 * README.md (also in writeup_report.md) summarizing the reports
 * Encountered issue while saving the video so had to edit video.py { imageio.plugins.ffmpeg.download()}
-Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing
+* Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing
 ```
 python drive.py model.h5
 ```
