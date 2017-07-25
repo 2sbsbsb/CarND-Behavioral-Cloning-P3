@@ -3,7 +3,6 @@ import numpy as np
 import cv2
 import os
 
-DATA_PATH = "data"
 
 def randomly_drop_low_steering_data(data):
     """ Randomly decrease data having
@@ -26,10 +25,6 @@ def process_img_from_path(img_path):
     """Returns Croppped Image
     for given img path.
     """
- 
-    ## Docker - Unable to read host absolute path so adjustment
-    ##img_path = os.path.join(os.getcwd(),DATA_PATH,'IMG',os.path.basename(img_path))
-
     return preprocess_img(plt.imread(img_path))
 
 

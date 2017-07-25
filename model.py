@@ -1,13 +1,3 @@
-
-# coding: utf-8
-
-# In[1]:
-
-
-
-
-# In[ ]:
-
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten, Convolution2D, Input, Lambda, SpatialDropout2D
 from keras.optimizers import Adam
@@ -21,7 +11,7 @@ from utils import get_images
 from utils import randomly_drop_low_steering_data
 
 
-DATA_PATH = "data"
+DATA_PATH = "../../data"
 LABEL_PATH = os.path.join(DATA_PATH, "driving_log.csv")
 BATCH_SIZE = 64
 EPOCHS = 50
@@ -82,14 +72,7 @@ validation_data = csv_df[training_count:].reset_index()
 training_data = randomly_drop_low_steering_data(training_data)
 
 ## Opening a random image to obatin input size for model 
-randoImageFile = os.path.join(DATA_PATH, training_data['center'].iloc[1].strip())
-open(randoImageFile,'r')
-print(os.stat(randoImageFile))
-print(randoImageFile)
-open(randoImageFile)
-
-
-img = process_img_from_path(randoImageFile)
+img = process_img_from_path(os.path.join(DATA_PATH, training_data['center'].iloc[909].strip()))
 
 ## Creating a model
 model = model_nvidia(img.shape)
@@ -99,4 +82,3 @@ nb_val_samples = len(validation_data)
 values = model.fit_generator(training_image_generator(training_data, BATCH_SIZE, DATA_PATH), samples_per_epoch=samples_per_epoch, nb_epoch=EPOCHS, validation_data=get_images(validation_data, DATA_PATH), nb_val_samples=len(validation_data))
 
 model.save('model.h5')
-
