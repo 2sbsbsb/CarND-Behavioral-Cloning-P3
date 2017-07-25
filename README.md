@@ -121,7 +121,7 @@ Following techniques were used for image augmentations:
 \* _The approach used for image transformation are provided in [this paper](http://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf) by Nvidia
 
 ## Parameter Tuning
-The model used an adam optimizer for minimizing **Mean Squared Error** as loss function. The ***initial learning rate** was choosen as **0.001** as the model did not converge well with the default learning rate of 0.01 ([model.py line 25](https://github.com/2sbsbsb/CarND-Behavioral-Cloning-P3/blob/master/model.py#L55)). The samples per epochs were decided on basis of the lenght of training data, and **epochs** used for training were **50** keeping in account that the model did not overfit (_this was ensured by keeping check on validation loss during training_).
+The model used an adam optimizer for minimizing **Mean Squared Error** as loss function. The ***initial learning rate** was choosen as **0.001** as the model did not converge well with the default learning rate of 0.01 ([model.py line 55](https://github.com/2sbsbsb/CarND-Behavioral-Cloning-P3/blob/master/model.py#L55)). The samples per epochs were decided on basis of the lenght of training data, and **epochs** used for training were **50** keeping in account that the model did not overfit (_this was ensured by keeping check on validation loss during training_).
 
 ## Model Generalization
 The model was trained using images obtained from track 1 alone and it worked without any further tuning for **track2**. The fact that the model worked on a track unseen by it speaks about the generalization of the model.
