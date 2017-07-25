@@ -4,7 +4,7 @@ This project was done as part of Udacity's Self-Driving Car Nanodegree Program. 
 
 To see the model click on https://github.com/2sbsbsb/CarND-Behavioral-Cloning-P3/blob/master/run1.mp4
 
-\* _model was only trained on track 1 data_
+Please note that model was only trained on track 1 data
 
 [//]: # (Image References)
 [model]: ./images/model.png "Model Visualization"
@@ -31,9 +31,8 @@ My project includes the following files:
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
 * utils.py contains code for Image Generator and data augmentation
-* DataVisialization.ipynb contains code for images being used in the writeup
 * README.md (also in writeup_report.md) summarizing the reports
-
+* Encountered issue while saving the video so had to edit video.py { imageio.plugins.ffmpeg.download()}
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing
 ```
 python drive.py model.h5
@@ -98,7 +97,6 @@ Despite the removal of low steering data, the car would deviate from the track a
 ### Approach 1: Collecting More Data
 To teach the car what to do when it’s off on the side of the road, I generated _**recovery data**_ i.e. collecting data such that it captures the behavior to follow when the car deviates from the track. I recorded data when the car is driving from the side of the road back toward the center line.
 
-The approach didn't work as the data collected did not have smooth steering angle across the laps (_I did not have fine control over the steering angle when running the simulator using keyboard_).
 
 ### Approach 2: Image Transformations
 Applying image transformation techniques to the existing data can be used to increase the volume of data available for training. Moreover, these makes the model less prone to **overfitting**.
