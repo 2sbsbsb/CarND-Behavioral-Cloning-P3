@@ -2,6 +2,7 @@
 ---
 This project was done as part of Udacity's Self-Driving Car Nanodegree Program. The model performance has been tested on for resolution of **320x240**, and graphic quality selected as 'fastest'.
 
+To see the model click on https://github.com/2sbsbsb/CarND-Behavioral-Cloning-P3/blob/master/run1.mp4
 
 \* _model was only trained on track 1 data_
 
