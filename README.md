@@ -51,7 +51,7 @@ Following image describes model architecture (_the `lambda_1` layer is the layer
 
 ![Model Defination][model]
 
-The complete model defination code can be found at [line 20 in model.py](https://github.com/sumitbinnani/CarND-Behavioral-Cloning-P3/blob/master/model.py#L20).
+The complete model defination code can be found at [line 20 in model.py](https://github.com/2sbsbsb/CarND-Behavioral-Cloning-P3/blob/master/model.py#L20).
 
 
 ## Training and Validation Data
@@ -74,7 +74,7 @@ The data provided by Udacity was split so as to use **80%** of data as training 
 When the model was trained with the raw data as provided by Udacity, the car had tendency to go straight and lost the track particularly at turnings. This led me to explore for various data processing and data augmentation techniques (_data augmentation_ techniques are discussed in next section).
 
 * #### Cropping Image
-	The original image was cropped to remove redundant top portion (sky and other details which is not required to decide steering angle). Also the bottom of the image displaying car hood was cropped out. The code for the same is [at line 18 of utils.py](https://github.com/sumitbinnani/CarND-Behavioral-Cloning-P3/blob/master/utils.py#L18).
+	The original image was cropped to remove redundant top portion (sky and other details which is not required to decide steering angle). Also the bottom of the image displaying car hood was cropped out. The code for the same is [at line 18 of utils.py](https://github.com/2sbsbsb/CarND-Behavioral-Cloning-P3/blob/master/utils.py#L18).
 
 	![Cropped Image][cropped_image]
 
@@ -83,10 +83,10 @@ When the model was trained with the raw data as provided by Udacity, the car had
 
 	![Steering Angle][steering_hist]
 
-	To combat the issue, about 70% of the randomly selected low steering angle were dropped from the **training data** (check [line 72 in model.py](https://github.com/sumitbinnani/CarND-Behavioral-Cloning-P3/blob/master/model.py#L72) and corresponding function defination in [line 7 of utils.py](https://github.com/sumitbinnani/CarND-Behavioral-Cloning-P3/blob/master/utils.py#L7)).
+	To combat the issue, about 70% of the randomly selected low steering angle were dropped from the **training data** (check [line 72 in model.py](https://github.com/2sbsbsb/CarND-Behavioral-Cloning-P3/blob/master/model.py#L72) and corresponding function defination in [line 7 of utils.py](https://github.com/2sbsbsb/CarND-Behavioral-Cloning-P3/blob/master/utils.py#L7)).
 
 ### Image Generators
-Image generators were used to generate training batches in realtime (this was to combat high memory usage if all the images were pre-cached in memory). The code for the same can be found at [line 71 of utils.py](https://github.com/sumitbinnani/CarND-Behavioral-Cloning-P3/blob/master/utils.py#L71). The code is well commented and a few steps involved in image generator are explained in the data augmentation section.
+Image generators were used to generate training batches in realtime (this was to combat high memory usage if all the images were pre-cached in memory). The code for the same can be found at [line 71 of utils.py](https://github.com/2sbsbsb/CarND-Behavioral-Cloning-P3/blob/master/utils.py#L71). The code is well commented and a few steps involved in image generator are explained in the data augmentation section.
 
 
 ## Data Augmentation
@@ -115,14 +115,14 @@ Following techniques were used for image augmentations:
 	![Corrected Left and Right Camera Images][left_center_right]
 
 * #### Applying Horizontal and Vertical Shifts
-	The camera images were horizontally/vertically shifted to simulate the effect of car being at different positions on the road, and an offset corresponding to the shift was added to the steering angle ([line 58 of utils.py](https://github.com/sumitbinnani/CarND-Behavioral-Cloning-P3/blob/master/utils.py#L58)).
+	The camera images were horizontally/vertically shifted to simulate the effect of car being at different positions on the road, and an offset corresponding to the shift was added to the steering angle ([line 58 of utils.py](https://github.com/2sbsbsb/CarND-Behavioral-Cloning-P3/blob/master/utils.py#L58)).
 
 	![Translated Image][translated]
 
 \* _The approach used for image transformation are provided in [this paper](http://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf) by Nvidia
 
 ## Parameter Tuning
-The model used an adam optimizer for minimizing **Mean Squared Error** as loss function. The ***initial learning rate** was choosen as **0.001** as the model did not converge well with the default learning rate of 0.01 ([model.py line 25](https://github.com/sumitbinnani/CarND-Behavioral-Cloning-P3/blob/master/model.py#L55)). The samples per epochs were decided on basis of the lenght of training data, and **epochs** used for training were **50** keeping in account that the model did not overfit (_this was ensured by keeping check on validation loss during training_).
+The model used an adam optimizer for minimizing **Mean Squared Error** as loss function. The ***initial learning rate** was choosen as **0.001** as the model did not converge well with the default learning rate of 0.01 ([model.py line 25](https://github.com/2sbsbsb/CarND-Behavioral-Cloning-P3/blob/master/model.py#L55)). The samples per epochs were decided on basis of the lenght of training data, and **epochs** used for training were **50** keeping in account that the model did not overfit (_this was ensured by keeping check on validation loss during training_).
 
 ## Model Generalization
 The model was trained using images obtained from track 1 alone and it worked without any further tuning for **track2**. The fact that the model worked on a track unseen by it speaks about the generalization of the model.
