@@ -1,6 +1,5 @@
 ##
-## Udacity PRORJECT
-## Code Reference - Behaviour Cloning Classes
+## Udacity PRORJECT - Behaviour Cloning 
 ##
 
 import csv 
@@ -69,19 +68,67 @@ for line in lines:
     measurements.append(steering_left)
     measurements.append(steering_right)
     
-
 img_paths = np.array(img_paths)
 measurements = np.array(measurements)
+
 print('Img_path and measurements :', img_paths.shape, measurements.shape)
+
+
+# Plot distribution of samples steering initial angles after prefiltering central angle samples
+plt.hist(measurements)
+plt.title("Steering angles Histogram")
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.gcf()
+plt.show()
+
+print ('Bias towards straight path')
+
+# Calculate the index to filter the data 
+# It will eliminate bias towards 0 stearing.
+
+threshold = 0.01  ## Stearing threshold
+keepPercent = 0.40 ## Keep 40% data
+remove_index = []
+
+for i in range(len(measurements)):
+    stearing = measurements[i]
+    if(abs(stearing) > 0.85):
+        remove_index.append(i)    
+    if(abs(stearing < threshold)):        
+        if np.random.random_sample() >keepPercent:
+            remove_index.append(i)
+            
+           
+
+print("How much data to remove ? -", len(remove_index))
+
+## Filter data 
+
+img_paths = np.delete(img_paths, remove_index, axis=0)
+measurements = np.delete(measurements, remove_index)
+
+
+print('Img_path and measurements :', img_paths.shape, measurements.shape)
+
+plt.hist(measurements)
+plt.title("Steering angles Histogram")
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.gcf()
+plt.show() 
+
+print('Filtered data')
+
 
 ##
 ##
 from sklearn.model_selection import train_test_split
-#samples = list(zip(augmented_images, augmented_measurements))
 samples = list(zip(img_paths, measurements))
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
 
-
+print('Number of train samples     : ', len(train_samples))
+print('Number of validation samples: ', len(validation_samples))
 
 ## Regression Network
 from keras.models import Sequential
@@ -194,4 +241,3 @@ plt.ylabel('mean squared error loss')
 plt.xlabel('epoch')
 plt.legend(['training set', 'validation set'], loc='upper right')
 plt.show()
-
