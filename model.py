@@ -1,3 +1,9 @@
+
+# coding: utf-8
+
+# In[1]:
+
+
 ##
 ## Udacity PRORJECT - Behaviour Cloning 
 ##
@@ -10,33 +16,21 @@ from keras.layers import Cropping2D
 import sklearn
 from sklearn.utils import shuffle
 import matplotlib.pyplot as plt
+from keras.regularizers import l2
+
+
+
+# In[2]:
+
 
 ##
 ##  Read the data from driving_log generated using the simulator in training mode
 ## 
 lines = []
-with open("data/driving_log.csv") as csvfile:
+with open("training_data/driving_log.csv") as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         lines.append(line)
-
-#
-#  Reading the images center,left,right images with no steering angle correction
-#  Commenting this out as loading too many images in memory not efficient instead going to use generator 
-#
-'''
-images = []
-measurements =[]
-for line in lines:
-    for i in range(3):
-        source_path = line[i]
-        # The m/c is same as the m/c where data is generated so no need to make any correction in the path
-        current_path = source_path
-        image = cv2.imread(current_path)
-        images.append(image)
-        measurement = float(line[3])
-        measurements.append(measurement);
-'''        
         
 #
 #  Reading the img_paths (center,left,right img path and taking sterring angle correction for left, right into account)
@@ -74,15 +68,8 @@ measurements = np.array(measurements)
 print('Img_path and measurements :', img_paths.shape, measurements.shape)
 
 
-# Plot distribution of samples steering initial angles after prefiltering central angle samples
-plt.hist(measurements)
-plt.title("Steering angles Histogram")
-plt.xlabel("Value")
-plt.ylabel("Frequency")
-plt.gcf()
-plt.show()
+# In[3]:
 
-print ('Bias towards straight path')
 
 # Plot distribution of samples steering initial angles after prefiltering central angle samples
 plt.hist(measurements)
@@ -93,6 +80,9 @@ plt.gcf()
 plt.show()
 
 print ('Bias towards straight path')
+
+
+# In[4]:
 
 
 # Calculate the index to filter the data 
@@ -115,6 +105,8 @@ for i in range(len(measurements)):
 print("How much data to remove ? -", len(remove_index))
 
 
+# In[5]:
+
 
 ## Filter data 
 
@@ -134,6 +126,8 @@ plt.show()
 print('Filtered data')
 
 
+# In[6]:
+
 
 ##
 ##
@@ -144,6 +138,10 @@ train_samples, validation_samples = train_test_split(samples, test_size=0.2)
 print('Number of train samples     : ', len(train_samples))
 print('Number of validation samples: ', len(validation_samples))
  
+
+
+# In[7]:
+
 
 ## Regression Network
 from keras.models import Sequential
@@ -185,26 +183,10 @@ def generator(samples, batch_size=32):
 train_generator = generator(train_samples, batch_size=32)
 validation_generator = generator(validation_samples, batch_size=32)
 
-
 model = Sequential()
-#model.add(Flatten(input_shape=(160,320,3)))
 model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
-#model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(x_train.shape[1],x_train.shape[2],x_train.shape[3])))
 # Crop the top 50% as it is mostly sky, and the bottom 20% as it is hood of the car 
 model.add(Cropping2D(cropping=((50,20),(0,0))))
-#model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
-
-#model.add(Flatten(input_shape=(x_train.shape[1],x_train.shape[2],x_train.shape[3])))
-#model.add(Flatten())
-#model.add(Dense(1))
-
-
-#train_generator = generator(train_samples, batch_size=32)
-#validation_generator = generator(validation_samples, batch_size=32)
-
-#model = Sequential()
-#model.add(Lambda(lambda x:x/255.0 - 0.5,input_shape=(160,320,3)))
-#model.add(Cropping2D(cropping=((50,20),(0,0))))
 
 '''Google LeNet
 model.add(Convolution2D(6,5,5,activation="relu"))
@@ -218,27 +200,22 @@ model.add(Dense(1))
 '''
 
 # NVDIA
+reg = 1e-3
 model.add(Convolution2D(24,5,5,subsample=(2,2),activation="relu"))
 model.add(Convolution2D(36,5,5,subsample=(2,2),activation="relu"))
 model.add(Convolution2D(48,5,5,subsample=(2,2),activation="relu"))
 model.add(Convolution2D(64,3,3,activation="relu"))
 model.add(Convolution2D(64,3,3,activation="relu"))
 model.add(Flatten())
-model.add(Dense(100))
-model.add(Dense(50))
-model.add(Dense(10))
+model.add(Dropout(0.5))
+model.add(Dense(100,activation="relu",W_regularizer=l2(reg)))
+model.add(Dense(50,activation="relu",W_regularizer=l2(reg)))
+model.add(Dense(10,activation="relu",W_regularizer=l2(reg)))
 model.add(Dense(1))
 
 model.compile(loss="mse", optimizer="adam")
-##model.fit(x_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=2)
-##model.save("model.h5")
-
 history_object = model.fit_generator(train_generator, samples_per_epoch= len(train_samples)*2, validation_data=validation_generator, nb_val_samples=len(validation_samples)*2, nb_epoch=5, verbose =1)
 model.save('model.h5')
-
-### Visualization -Outputting Training and Validation Loss Metrics
-#history_object = model.fit_generator(train_generator, samples_per_epoch= len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=2, verbose =1)
-#history_object = model.fit_generator(train_generator, samples_per_epoch= len(train_samples)*2, validation_data=validation_generator, nb_val_samples=len(validation_samples)*2, nb_epoch=3, verbose =1)
 
 
 ### print the keys contained in the history object
@@ -258,4 +235,4 @@ plt.legend(['training set', 'validation set'], loc='upper right')
 plt.show()
 
 
-    
+# # 
